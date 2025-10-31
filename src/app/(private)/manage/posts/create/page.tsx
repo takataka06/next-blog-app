@@ -7,6 +7,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import "highlight.js/styles/github.css"; // コードハイライト用のスタイル
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 
 export default function CreatePage() {
@@ -44,7 +45,22 @@ export default function CreatePage() {
         <div className="text-right text-sm text-gray-500 mt-1">
           文字数 : {contentLength}
         </div>
-
+        <div>
+          <Button type="button" onClick={() => setPreview(!preview)} >
+            {preview ? "プレビューを閉じる" : "プレビューを表示"}
+          </Button>
+        </div>
+        {preview && (
+          <div className="border p-4 bg-gray-50 prose max-w-none">
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[rehypeHighlight]}
+              skipHtml={false} // HTMLスキップを無効化
+              unwrapDisalowed={true} // Markdownの改行を解釈
+            >{content}</ReactMarkdown>
+          </div>
+        )}
+        <Button type="submit" className="bg-blue-500 text-white  px-4 py-2 rounded">投稿</Button>
 
       </form>
 
