@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
-import { getOwnPost } from "@/lib/ownPost";
+import { getOwnPosts } from "@/lib/ownPost";
 import PostDropdownMenu from "@/components/post/PostDropdownMenu";
 import Link from "next/link";
 
@@ -10,7 +10,7 @@ export default async function DashboardPage() {
   if (!session?.user?.email || !userId){
     throw new Error("不正なリクエスト")
   }
-  const posts = await getOwnPost(userId)
+  const posts = await getOwnPosts(userId)
 
   return (
     <div className="p-4">
