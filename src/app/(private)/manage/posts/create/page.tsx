@@ -8,12 +8,17 @@ import "highlight.js/styles/github.css"; // コードハイライト用のスタ
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { createPost } from "@/lib/actions/createPost";
 
 
 export default function CreatePage() {
   const [content, setContent] = useState("") // 記事の文章
   const [contentLength, setContentLength] = useState(0) // 文字数
   const [preview, setPreview] = useState(false) // プレビュー
+  const [state, formAction] = useActionState(
+    createPost,
+    { success: false, errors: {} },
+  );
 
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
@@ -24,11 +29,26 @@ export default function CreatePage() {
   return (
     <div className="container mx-auto mt-10">
       <h1 className="text-2xl font-bold mb-4">新規記事作成</h1>
-      <form className="space-y-6">
+      <form className="space-y-6" action={formAction} >
         <div>
           <Label htmlFor="title">タイトル</Label>
           <Input type="text" id="title" name="title" placeholder="タイトルを入力してください" />
+          {state.errors.title && (
+            <p className="text-sm text-red-500">{state.errors.confirmPassword.join(",")}</p>
+          )}
 
+        </div>
+        <div>
+          <Label htmlFor="topImage">トップ画像</Label>
+          <Input
+            type="file"
+            id="topImage"
+            accept="image/*"
+            name="topImage"
+          />
+          {state.errors.topImage && (
+            <p className="text-sm text-red-500">{state.errors.confirmPassword.join(",")}</p>
+          )}
         </div>
         <div>
           <Label htmlFor="content">内容</Label>
@@ -41,6 +61,9 @@ export default function CreatePage() {
             value={content}
             onChange={handleContentChange}
           />
+          {state.errors.content && (
+            <p className="text-sm text-red-500">{state.errors.confirmPassword.join(",")}</p>
+          )}
         </div>
         <div className="text-right text-sm text-gray-500 mt-1">
           文字数 : {contentLength}
