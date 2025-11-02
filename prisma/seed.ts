@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
 import * as bcrypt from 'bcryptjs';
-
+// Prisma Clientのインスタンスを作成
 const prisma = new PrismaClient();
 
 async function main() {
@@ -43,12 +43,14 @@ async function main() {
 
   console.log({ user });
 }
-
+// 
 main()
+// メイン内で発生したエラーをキャッチしてログに出力
   .catch((e) => {
     console.error(e);
     process.exit(1);
   })
+// エラーの有無にかかわらずPrisma Clientの接続を切断
   .finally(async () => {
     await prisma.$disconnect();
   });
